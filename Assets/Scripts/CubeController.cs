@@ -8,7 +8,8 @@ public class CubeController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+        //開啟陀螺儀
+        Input.gyro.enabled = true;
 	}
 	
 	// Update is called once per frame
@@ -24,5 +25,14 @@ public class CubeController : MonoBehaviour {
             Vector3 TargetPos = mainCamera.ScreenToWorldPoint(screenPos);
             this.transform.position = TargetPos;
         }
-	}
+
+        this.transform.rotation = ConverRotation(Input.gyro.attitude);
+
+    }
+
+    private Quaternion ConverRotation(Quaternion q) {
+        // Quaternion.Euler(90, 0, 0) 先沿著X軸旋轉90度
+        // -q.z, -q.w 把原本的旋轉鏡像
+        return Quaternion.Euler(90, 0, 0) * new Quaternion(q.x, q.y, -q.z, -q.w);
+    }
 }
