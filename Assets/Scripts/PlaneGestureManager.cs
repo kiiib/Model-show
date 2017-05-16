@@ -83,7 +83,7 @@ public class PlaneGestureManager : MonoBehaviour {
                 Debug.Log ("end");
                 Log.text = "end";
                 Vector2 speed = Input.GetTouch(0).deltaPosition * Time.deltaTime;
-                if (preAction == TouchPhase.Moved && touchTimer < 0.8f) {
+                if (preAction == TouchPhase.Moved && touchTimer < 0.4f) {
 
                     Vector2 currPos = Input.GetTouch(0).position;
                     Vector2 direction = currPos - touchStartPos;
