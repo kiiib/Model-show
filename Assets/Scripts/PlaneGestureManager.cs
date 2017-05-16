@@ -25,6 +25,7 @@ public class PlaneGestureManager : MonoBehaviour {
     private Vector2 touchStartPos;
     private TouchPhase preAction;
     private float swipeSpeedThreshold = 0.01f;
+    private float touchTimer = 0;
 
     //private bool DoAnimation = false;
 	// Use this for initialization
@@ -57,6 +58,7 @@ public class PlaneGestureManager : MonoBehaviour {
 
         if (Input.touchCount == 1) {
             if (Input.GetTouch(0).phase == TouchPhase.Began) {
+                
                 touchStartPos = Input.GetTouch(0).position;
                 Debug.Log("start " + touchStartPos);
                 Log.text = "start " + touchStartPos;
@@ -65,6 +67,7 @@ public class PlaneGestureManager : MonoBehaviour {
 
 
             if (Input.GetTouch(0).phase == TouchPhase.Moved) {
+                touchTimer += Time.deltaTime;
                 Vector2 speed = Input.GetTouch(0).deltaPosition * Time.deltaTime;
                 if (speed.sqrMagnitude < swipeSpeedThreshold) {
                     if (Input.GetTouch(0).deltaPosition.x > 0)
@@ -80,7 +83,7 @@ public class PlaneGestureManager : MonoBehaviour {
                 Debug.Log ("end");
                 Log.text = "end";
                 Vector2 speed = Input.GetTouch(0).deltaPosition * Time.deltaTime;
-                if (preAction == TouchPhase.Moved && speed.sqrMagnitude >= 0.001f) {
+                if (preAction == TouchPhase.Moved && touchTimer < 0.8f) {
 
                     Vector2 currPos = Input.GetTouch(0).position;
                     Vector2 direction = currPos - touchStartPos;
@@ -100,7 +103,7 @@ public class PlaneGestureManager : MonoBehaviour {
                     }
                 }
 
-
+                touchTimer = 0;
                 preAction = TouchPhase.Ended;
             }
         }
